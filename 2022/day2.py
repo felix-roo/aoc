@@ -24,28 +24,44 @@ Paper = 2
 Scissors = 3
 
 def mtp(input):
-    return ({
+    opts = {
         'A': Rock,
         'B': Paper,
         'C': Scissors,
         'X': Rock,
         'Y': Paper,
         'Z': Scissors,
-    }[input])
+    }
+    if input not in opts:
+        print('no such option ', input)
+        exit(-1)
+    return (opts[input])
 
 Lose = 0
 Draw = 3
 Win = 6
 
 def cw(theirs, mine):
+    relationships = {
+        Rock: Scissors,
+        Scissors: Paper,
+        Paper: Rock,
+    }
+    if theirs == mine:
+        return Draw
     
-    return Draw
+    defeated_by = relationships[theirs]
+    if mine == defeated_by:
+        return Lose
+    
+    return Win
+
+ts = 0
 
 for line in d2.input_data.split('\n'):
     inputs = line.split(' ')
     (t, m) = inputs
-    r = cw(t, m)
-    
-    
-    print([mtp(v) for v in inputs])
-    break
+    result = cw(mtp(t), mtp(m)) + mtp(m)
+    ts += result
+
+print('total score:', ts)
